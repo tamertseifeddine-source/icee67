@@ -1,5 +1,7 @@
 const express = require("express");
 const cors = require("cors");
+console.log("TOKEN:", TOKEN);
+console.log("CHAT_ID:", CHAT_ID);
 const axios = require("axios");
 const path = require("path");
 
