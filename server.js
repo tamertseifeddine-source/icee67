@@ -8,35 +8,34 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ Environment Variables (Render)
+// 🔵 ENV (Render)
 const TOKEN = process.env.TOKEN;
 const CHAT_ID = process.env.CHAT_ID;
 
-console.log("TOKEN:", TOKEN);
-console.log("CHAT_ID:", CHAT_ID);
+console.log("TOKEN LOADED:", !!TOKEN);
+console.log("CHAT_ID LOADED:", CHAT_ID);
 
-// 🔵 Home page
+// 🔵 static files
 app.use(express.static(__dirname));
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "home.html"));
 });
 
-// 🔵 Order API
+// 🔥 ORDER ROUTE
 app.post("/order", async (req, res) => {
   try {
-    const {
-      firstName,
-      lastName,
-      phone,
-      wilaya,
-      address,
-      cart
-    } = req.body;
+    console.log("BODY RECEIVED:", req.body);
+
+    if (!TOKEN || !CHAT_ID) {
+      throw new Error("TOKEN or CHAT_ID is missing in ENV");
+    }
+
+    const { firstName, lastName, phone, wilaya, address, cart } = req.body;
 
     let productsText = "";
 
-    if (cart && cart.length > 0) {
+    if (Array.isArray(cart)) {
       cart.forEach((item, index) => {
         productsText += `
 📦 Produit ${index + 1}: ${item.name}
@@ -58,7 +57,7 @@ ${productsText}
 🏠 Adresse: ${address}
 `;
 
-    await axios.post(
+    const telegramResponse = await axios.post(
       `https://api.telegram.org/bot${TOKEN}/sendMessage`,
       {
         chat_id: CHAT_ID,
@@ -66,18 +65,22 @@ ${productsText}
       }
     );
 
-    res.json({ message: "Commande envoyée ✅" });
+    console.log("TELEGRAM RESPONSE:", telegramResponse.data);
+
+    res.json({ ok: true, message: "Commande envoyée ✅" });
 
   } catch (error) {
-    console.log(error.response?.data || error);
+    console.log("ERROR FULL:", error.response?.data || error.message);
 
     res.status(500).json({
-      message: "Erreur serveur ❌"
+      ok: false,
+      message: "Erreur serveur ❌",
+      error: error.response?.data || error.message
     });
   }
 });
 
-// 🔵 Start server
+// 🔵 start server
 app.listen(process.env.PORT || 3000, () => {
   console.log("Server running on port 3000");
 });
