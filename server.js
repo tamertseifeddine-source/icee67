@@ -8,56 +8,61 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔵 ENV (Render)
-const TOKEN = process.env.TOKEN;
-const CHAT_ID = process.env.CHAT_ID;
+const TOKEN = "8732235422:AAHaw2iSZMDM2MMIXifYkrJW1spzv3YkI10";
+const CHAT_ID = "2144877853";
 
-console.log("TOKEN LOADED:", !!TOKEN);
-console.log("CHAT_ID LOADED:", CHAT_ID);
 
-// 🔵 static files
-app.use(express.static(__dirname));
-
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "home.html"));
-});
-
-// 🔥 ORDER ROUTE
 app.post("/order", async (req, res) => {
-  try {
-    console.log("BODY RECEIVED:", req.body);
 
-    if (!TOKEN || !CHAT_ID) {
-      throw new Error("TOKEN or CHAT_ID is missing in ENV");
-    }
+  console.log(req.body);
 
-    const { firstName, lastName, phone, wilaya, address, cart } = req.body;
+  const {
+    firstName,
+    lastName,
+    phone,
+    wilaya,
+    address,
+    cart
+  } = req.body;
 
-    let productsText = "";
+  let productsText = "";
 
-    if (Array.isArray(cart)) {
-      cart.forEach((item, index) => {
-        productsText += `
+  if (cart && cart.length > 0) {
+
+    cart.forEach((item, index) => {
+
+      productsText += `
 📦 Produit ${index + 1}: ${item.name}
-💰 Prix: ${item.price}
-🎨 Couleur: ${item.color}
-`;
-      });
-    }
 
-    const message = `
+💰 Prix: ${item.price}
+
+🎨 Couleur: ${item.color}
+
+`;
+
+    });
+
+  }
+
+  const message = `
 🛒 Nouvelle commande
 
 ${productsText}
 
 👤 Nom: ${firstName}
+
 👤 Prénom: ${lastName}
+
 📞 Téléphone: ${phone}
+
 📍 Wilaya: ${wilaya}
+
 🏠 Adresse: ${address}
 `;
 
-    const telegramResponse = await axios.post(
+  try {
+
+    await axios.post(
       `https://api.telegram.org/bot${TOKEN}/sendMessage`,
       {
         chat_id: CHAT_ID,
@@ -65,22 +70,30 @@ ${productsText}
       }
     );
 
-    console.log("TELEGRAM RESPONSE:", telegramResponse.data);
-
-    res.json({ ok: true, message: "Commande envoyée ✅" });
+    res.json({
+      message: "Commande envoyée ✅"
+    });
 
   } catch (error) {
-    console.log("ERROR FULL:", error.response?.data || error.message);
+
+    console.log(error.response?.data || error);
 
     res.status(500).json({
-      ok: false,
-      message: "Erreur serveur ❌",
-      error: error.response?.data || error.message
+      message: "Erreur serveur ❌"
     });
+
   }
+
 });
 
-// 🔵 start server
+app.use(express.static(__dirname));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "home.html"));
+});
+
 app.listen(process.env.PORT || 3000, () => {
+
   console.log("Server running on port 3000");
+
 });
