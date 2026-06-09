@@ -14,6 +14,7 @@ const CHAT_ID = process.env.CHAT_ID;
 
 console.log("TOKEN LOADED:", !!TOKEN);
 console.log("CHAT_ID LOADED:", CHAT_ID);
+console.log("ORDER ROUTE HIT");
 
 // 🔵 static files
 app.use(express.static(__dirname));
