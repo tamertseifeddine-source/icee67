@@ -8,8 +8,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-const TOKEN = "8732235422:AAHaw2iSZMDM2MMIXifYkrJW1spzv3YkI10";
-const CHAT_ID = "2144877853";
+const TOKEN = process.env.TOKEN;
+const CHAT_ID = process.env.CHAT_ID;
 
 app.post("/order", async (req, res) => {
 
