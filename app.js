@@ -160,7 +160,7 @@ document
 
   try {
 
-    const response = await fetch("http://localhost:3000/order", {
+    fetch("https://icee67.onrender.com/order", {
 
       method: "POST",
 
