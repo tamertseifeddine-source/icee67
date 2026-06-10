@@ -32,50 +32,45 @@ function changeMedia(element) {
   const mainImage = document.getElementById("mainImage");
   const mainVideo = document.getElementById("mainVideo");
 
-  // remove active from all thumbs
   document.querySelectorAll(".thumb")
     .forEach(el => el.classList.remove("active"));
 
   element.classList.add("active");
 
-  // IMAGE
   if (element.tagName === "IMG") {
 
     mainVideo.style.display = "none";
     mainImage.style.display = "block";
 
     mainImage.src = element.src;
-  }
 
-  // VIDEO
-  else if (element.tagName === "VIDEO") {
+  } else if (element.tagName === "VIDEO") {
 
     mainImage.style.display = "none";
     mainVideo.style.display = "block";
 
     mainVideo.load();
+
   }
 }
 
 document
-.getElementById("addToCart")
-.addEventListener("click", () => {
+  .getElementById("addToCart")
+  .addEventListener("click", () => {
 
-  const product = {
+    const product = {
 
-    name: document.body.dataset.product,
+      name: document.body.dataset.product,
+      price: document.body.dataset.price,
+      color: document.getElementById("color").value
 
-    price: document.body.dataset.price,
+    };
 
-    color: document.getElementById("color").value
+    cart.push(product);
 
-  };
+    displayCart();
 
-  cart.push(product);
-
-  displayCart();
-
-});
+  });
 
 function displayCart() {
 
@@ -94,8 +89,8 @@ function displayCart() {
         <p>🎨 ${item.color}</p>
 
         <button
-        onclick="removeFromCart(${index})"
-        class="remove-btn">
+          onclick="removeFromCart(${index})"
+          class="remove-btn">
 
           Supprimer
 
@@ -117,71 +112,65 @@ function removeFromCart(index) {
 
 }
 
-
 document
-.getElementById("orderForm")
-.addEventListener("submit", async function (e) {
+  .getElementById("orderForm")
+  .addEventListener("submit", async function (e) {
 
-  e.preventDefault();
+    e.preventDefault();
 
-  const data = {
+    const data = {
 
-    firstName:
-    document.getElementById("firstName").value,
+      firstName:
+        document.getElementById("firstName").value,
 
-    lastName:
-    document.getElementById("lastName").value,
+      lastName:
+        document.getElementById("lastName").value,
 
-    phone:
-    document.getElementById("phone").value,
+      phone:
+        document.getElementById("phone").value,
 
-    wilaya:
-    document.getElementById("wilaya").value,
+      wilaya:
+        document.getElementById("wilaya").value,
 
-    address:
-    document.getElementById("address").value,
+      address:
+        document.getElementById("address").value,
 
-    cart: cart.length > 0
-    ? cart
-    : [
-        {
-          name:
-          document.body.dataset.product,
+      cart: cart.length > 0
+        ? cart
+        : [
+          {
+            name: document.body.dataset.product,
+            price: document.body.dataset.price,
+            color: document.getElementById("color").value
+          }
+        ]
 
-          price:
-          document.body.dataset.price,
+    };
 
-          color:
-          document.getElementById("color").value
-        }
-      ]
+    try {
 
-  };
+      const response = await fetch("/order", {
 
-  try {
+        method: "POST",
 
-    fetch("https://icee67.onrender.com/order", {
+        headers: {
+          "Content-Type": "application/json"
+        },
 
-      method: "POST",
+        body: JSON.stringify(data)
 
-      headers: {
-        "Content-Type": "application/json"
-      },
+      });
 
-      body: JSON.stringify(data)
+      const result = await response.json();
 
-    });
+      alert(result.message);
 
-    const result = await response.json();
+    } catch (error) {
 
-    alert(result.message);
+      console.error(error);
 
-  } catch (error) {
+      alert("Erreur serveur ❌");
 
-    console.log(error);
+    }
 
-    alert("Erreur serveur ❌");
-
-  }
-
-});
+  });
