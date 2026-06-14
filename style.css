@@ -11,10 +11,6 @@
   padding:0;
   box-sizing:border-box;
 }
-.old-price 
-{
-    text-decoration:line-through;
-}
 
 
 body{
@@ -289,7 +285,9 @@ video.thumb{
   margin-top:10px;
 
   font-size:27px;
-
+  
+  text-decoration:line-through;
+  
   font-weight:700;
 
   color:#ffffff;
