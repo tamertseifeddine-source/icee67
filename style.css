@@ -11,6 +11,11 @@
   padding:0;
   box-sizing:border-box;
 }
+.old-price 
+{
+    text-decoration:line-through;
+}
+
 
 body{
   font-family:'Cairo', sans-serif;
