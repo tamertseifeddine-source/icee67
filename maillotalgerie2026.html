@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+      <meta charset="UTF-8" />
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+      <title>MAILLOT ALGERIE 2026</title>
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+      <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-product="MAILLOT ALGERIE 2026" data-price="3400DA">
+
+      <div class="bg-light"></div>
+      <div class="container">
+      <div class="gallery">
+      <div class="image-wrapper">
+           <img id="mainImage" src="sacochebanale1.jpeg" class="product-image">
+           <video id="mainVideo" class="product-image" controls style="display:none;">
+           <source src="l.mp4" type="video/mp4"></video>
+      <div class="crystal-reflection"></div>
+      </div>
+      <div class="thumbnails">
+            <img src="sacochebanale2.jpeg"
+                 class="thumb active"
+                 onclick="changeMedia(this)">
+            <img src="sacochebanale3.jpeg"
+                 class="thumb"
+                 onclick="changeMedia(this)">
+            <img src="sacochebanale1.jpeg"
+                 class="thumb"
+                 onclick="changeMedia(this)">
+            <img src="sacochebanale4.jpeg"
+                 class="thumb"
+                 onclick="changeMedia(this)">
+
+      </div>
+      </div>
+      <div class="product-info">
+            <span class="luxury-badge">PROMO 10%</span>
+            <h1>MAILLOT ALGERIE 2026</h1>
+            <p class="description">🔥 MAILLOT ALGERIE derniere collection – super haute qualite</p>
+      <div class="price-row">
+            <p class="price1">4500DA</p>
+            <p class="price">3400DA 340alf</p>
+      <div class="stock-box">high quality ( Livraison disponible التوصيل متوفر)</div>
+      </div>
+            <button type="button" id="addToCart">Ajouter au panier</button>
+      <div id="cart"></div> 
+            <label> choisir taille :</label>
+            <select id="taille">
+            <option value="xxl">xxl</option>
+            <option value="xl">xl</option>
+            <option value="L">L</option>
+            <option value="M">M</option>
+            </select>
+      <div class="status" id="status">Disponible ✅
+      </div>
+      </div>
+            <form id="orderForm">
+            <h2>Confirmer votre commande تاكيد الطلبية</h2>
+            <input type="text" id="firstName" placeholder="Nom اسم" required>
+            <input type="text" id="lastName" placeholder="Prénom لقب" required>
+            <input type="text" id="phone" placeholder="Téléphone رقم الهاتف" required>
+            <input type="text" id="wilaya" placeholder="Wilaya الولاية" required>
+            <textarea id="address" placeholder="Adresse عنوان المنزل" required></textarea>
+            <button type="submit">Confirmer la commande تاكيدالطلبية</button>
+            </form>
+      </div>
+            <script src="app.js"></script>
+
+</body>
+</html>
